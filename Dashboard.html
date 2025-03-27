@@ -3,10 +3,9 @@
 <head>
     <title> UniTask - Home Page</title>
     <link rel="icon" href="static/image/favicon.ico" type="image/x-icon">
-    <script src="static/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="static/js/task.js"></script>
     <link rel="stylesheet" type="text/css" href="static/css/main.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -37,7 +36,7 @@
                 <h2>Overall Progress</h2>
                 <div class="progress-bar-container">
                     <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" style="width: 0%;" id="progress-fill">
+                        <div class="progress-bar-fill" id="progress-fill">
                             <span id="progress-percent">0%</span>
                         </div>
                     </div>
@@ -50,27 +49,23 @@
                 <button id="openAddTask">+ Add New Task</button>
             </div>
 
+            <!-- Task Modal -->
             <div id="taskModal" class="modal hidden">
                 <div class="modal-content">
-                    <span id="closeModal" class="close-btn">&times;</span>
                     <h2>Add New Task</h2>
-                    <input type="text" id="taskTitle" placeholder="Task title..." />
-                    <input type="datetime-local" id="taskDeadline" />
+                    <input type="text" id="taskTitle" placeholder="Task title..." required />
+                    <input type="datetime-local" id="taskDeadline" required />
                     <button id="addTaskBtn">Add Task</button>
+                    <button id="closeModal">Cancel</button>
                 </div>
             </div>
 
             <h2>📝 Your Tasks</h2>
-            <div class="task-list">
-                <div class="task-card" data-deadline="2025-03-25T23:59:59">
-                    <input type="checkbox" class="done-checkbox" />
-                    <div class="task-info">
-                        <h3>Math Assignment</h3>
-                        <p>Due in <span class="countdown">loading...</span></p>
-                    </div>
-                    <button class="remove-btn">❌</button>
-                </div>
-            </div>
+            
+            <!-- Task List (Updated to use <ul> and <li>) -->
+            <ul class="task-list">
+                <!-- Tasks will be dynamically added here -->
+            </ul>
         </section>
 
     </main>
@@ -78,6 +73,12 @@
     <footer>
         <p>&copy; 2025 UniTask. All rights reserved.</p>
     </footer>
+
+    <script>
+        $(document).ready(() => {
+            renderTasks(); // Ensure tasks load properly
+        });
+    </script>
 
 </body>
 </html>
