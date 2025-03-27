@@ -60,13 +60,13 @@ $('#darkToggle').click(() => {
     updateProgress();
   }
   
-  // Bind event listeners
-  function bindEvents() {
+  // Event bindings
+function bindEvents() {
     $('.remove-btn').off().on('click', function () {
       const id = $(this).closest('.task-item').data('id');
       tasks = tasks.filter(t => t.id !== id);
       saveTasks();
-      renderTasks();
+      renderTasks(); // Re-render after removing
     });
   
     $('.done-checkbox').off().on('change', function () {
@@ -76,7 +76,31 @@ $('#darkToggle').click(() => {
       saveTasks();
       updateProgress();
     });
-  }
+  
+    // Make sure modals still open/close
+    $('#openAddTask').off().on('click', () => $('#taskModal').removeClass('hidden'));
+    $('#closeModal').off().on('click', () => $('#taskModal').addClass('hidden'));
+  
+    // Ensure "Add Task" button still works
+    $('#addTaskBtn').off().on('click', () => {
+      const title = $('#taskTitle').val().trim();
+      const deadline = $('#taskDeadline').val();
+      if (!title || !deadline) return alert('Please enter both task title and deadline.');
+  
+      const newTask = {
+        id: Date.now(),
+        title,
+        deadline,
+        done: false
+      };
+      tasks.push(newTask);
+      saveTasks();
+      renderTasks(); // Re-render tasks to update UI
+      $('#taskModal').addClass('hidden');
+      $('#taskTitle').val('');
+      $('#taskDeadline').val('');
+    });
+  }  
   
   // Countdown updates
   function updateCountdowns() {
