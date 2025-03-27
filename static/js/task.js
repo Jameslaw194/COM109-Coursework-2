@@ -1,107 +1,111 @@
-$(document).ready(function () {
-  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-  function saveTasks() {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-  }
-
-  function renderTasks() {
-      let $taskList = $(".task-list");
-      $taskList.empty(); // Clear existing tasks to prevent duplication
-
-      if (tasks.length === 0) {
-          $taskList.append("<li>No tasks yet! Add one above. ✅</li>");
-      }
-
-      tasks.forEach((task, index) => {
-          let deadline = new Date(task.deadline).getTime();
-          let timeRemaining = calculateTimeRemaining(deadline);
-          let checked = task.completed ? "checked" : "";
-
-          let taskHTML = `
-              <li class="task-card" data-index="${index}">
-                  <input type="checkbox" class="done-checkbox" ${checked} />
-                  <div class="task-info">
-                      <h3>${task.title}</h3>
-                      <p>Due in <span class="countdown">${timeRemaining}</span></p>
-                  </div>
-                  <button class="remove-btn">❌</button>
-              </li>
-          `;
-
-          $taskList.append(taskHTML);
-      });
-
-      updateProgress();
-  }
-
-  function calculateTimeRemaining(deadline) {
-      let now = new Date().getTime();
-      let difference = deadline - now;
-
-      if (difference <= 0) return "Expired ⏳";
-      
-      let hours = Math.floor(difference / (1000 * 60 * 60));
-      let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-
-      return `${hours}h ${minutes}m`;
-  }
-
-  function updateCountdowns() {
-      $(".task-card").each(function () {
-          let index = $(this).attr("data-index");
-          let deadline = new Date(tasks[index].deadline).getTime();
-          $(this).find(".countdown").text(calculateTimeRemaining(deadline));
-      });
-  }
-
-  function updateProgress() {
-      let completedTasks = tasks.filter(task => task.completed).length;
-      let totalTasks = tasks.length;
-      let progress = totalTasks ? Math.round((completedTasks / totalTasks) * 100) : 0;
-
-      $("#progress-fill").css("width", progress + "%");
-      $("#progress-percent").text(progress + "%");
-  }
-
-  // Modal Controls
-  $("#openAddTask").click(() => $("#taskModal").removeClass("hidden"));
-  $("#closeModal").click(() => $("#taskModal").addClass("hidden"));
-
-  // Add Task
-  $("#addTaskBtn").click(() => {
-      let title = $("#taskTitle").val().trim();
-      let deadline = $("#taskDeadline").val();
-
-      if (title === "" || !deadline) {
-          alert("Please enter a valid task and deadline!");
-          return;
-      }
-
-      tasks.push({ title, deadline, completed: false });
-      saveTasks();
-      renderTasks();
-      $("#taskTitle, #taskDeadline").val(""); // Clear input fields
-      $("#taskModal").addClass("hidden"); // Close modal
+// Dark mode toggle
+$('#darkToggle').click(() => {
+    $('body').toggleClass('dark');
+    localStorage.setItem('UniTask_darkMode', $('body').hasClass('dark') ? 'true' : 'false');
   });
-
-  // Task Completion
-  $(document).on("change", ".done-checkbox", function () {
-      let index = $(this).closest(".task-card").attr("data-index");
-      tasks[index].completed = $(this).prop("checked");
-      saveTasks();
-      updateProgress();
-  });
-
-  // Remove Task
-  $(document).on("click", ".remove-btn", function () {
-      let index = $(this).closest(".task-card").attr("data-index");
-      tasks.splice(index, 1);
-      saveTasks();
-      renderTasks();
-  });
-
-  // Initial Load
+  if (localStorage.getItem('UniTask_darkMode') === 'true') $('body').addClass('dark');
+  
+  // Modal open/close
+  $('#openAddTask').click(() => $('#taskModal').removeClass('hidden'));
+  $('#closeModal').click(() => $('#taskModal').addClass('hidden'));
+  
+  // Load tasks from LocalStorage
+  let tasks = JSON.parse(localStorage.getItem('UniTask_tasks')) || [];
   renderTasks();
-  setInterval(updateCountdowns, 60000); // Update countdown every 60s
-});
+  
+  // Add new task
+  $('#addTaskBtn').click(() => {
+    const title = $('#taskTitle').val().trim();
+    const deadline = $('#taskDeadline').val();
+    if (!title || !deadline) return alert('Please enter both task title and deadline.');
+  
+    const newTask = {
+      id: Date.now(),
+      title,
+      deadline,
+      done: false
+    };
+    tasks.push(newTask);
+    saveTasks();
+    renderTasks();
+    $('#taskModal').addClass('hidden');
+    $('#taskTitle').val('');
+    $('#taskDeadline').val('');
+  });
+  
+  // Save tasks to LocalStorage
+  function saveTasks() {
+    localStorage.setItem('UniTask_tasks', JSON.stringify(tasks));
+  }
+  
+  // Render tasks
+  function renderTasks() {
+    $('.task-list').html('');
+    tasks.forEach(task => {
+      const taskEl = $(`
+        <li class="task-item" data-id="${task.id}" data-deadline="${task.deadline}">
+          <input type="checkbox" class="done-checkbox" ${task.done ? 'checked' : ''} />
+          <div class="task-info">
+            <h3>${task.title}</h3>
+            <p>Due in <span class="countdown">loading...</span></p>
+          </div>
+          <button class="remove-btn">❌</button>
+        </li>
+      `);
+      $('.task-list').append(taskEl);
+    });
+  
+    bindEvents();
+    updateCountdowns();
+    updateProgress();
+  }
+  
+  // Bind event listeners
+  function bindEvents() {
+    $('.remove-btn').off().on('click', function () {
+      const id = $(this).closest('.task-item').data('id');
+      tasks = tasks.filter(t => t.id !== id);
+      saveTasks();
+      renderTasks();
+    });
+  
+    $('.done-checkbox').off().on('change', function () {
+      const id = $(this).closest('.task-item').data('id');
+      const task = tasks.find(t => t.id === id);
+      if (task) task.done = this.checked;
+      saveTasks();
+      updateProgress();
+    });
+  }
+  
+  // Countdown updates
+  function updateCountdowns() {
+    $('.task-item').each(function () {
+      const deadline = new Date($(this).data('deadline'));
+      const now = new Date();
+      const diff = deadline - now;
+  
+      if (diff <= 0) {
+        $(this).find('.countdown').text('Expired');
+        return;
+      }
+  
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const m = Math.floor((diff / (1000 * 60)) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+  
+      $(this).find('.countdown').text(`${d}d ${h}h ${m}m ${s}s`);
+    });
+  }
+  setInterval(updateCountdowns, 1000);
+  
+  // Update progress bar
+  function updateProgress() {
+    const total = tasks.length;
+    const done = tasks.filter(t => t.done).length;
+    const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+    $('.progress-bar-fill').css('width', percent + '%');
+    $('#progress-percent').text(percent + '%');
+  }
+  
