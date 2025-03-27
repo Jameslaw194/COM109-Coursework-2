@@ -1,0 +1,203 @@
+html {
+	min-height: 100%;
+}
+
+body {
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+    padding: 20px;
+}
+
+/*Navigation bar*/
+.topnav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #3fa3ac;
+}
+
+.topnav img {
+    height: 50px;
+    width: auto;
+    max-width: 100%;
+}
+
+.topnav nav {
+    display: flex;
+    align-items: center;
+}
+
+.topnav ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.topnav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.topnav .settings-icon {
+    height: 30px;
+    width: auto;
+}
+
+@media (max-width: 768px) {
+    .topnav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .topnav img {
+        height: 40px;
+    }
+
+    .topnav ul {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .topnav a {
+        display: block;
+        padding: 8px;
+    }
+}
+
+
+
+/*Footer*/
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background: #3e3c3c;
+    color: #ccc;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+}
+
+/*Instuctions*/
+.instructions {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+.instructions h2 {
+    color: #242a84;
+    border-bottom: 2px solid #242a84;
+    padding-bottom: 5px;
+}
+
+.instructions ol {
+    padding-left: 20px;
+}
+
+.instructions ol li {
+    margin-bottom: 10px;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.instructions a {
+    color: #b31e1e;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.instructions a:hover {
+    text-decoration: underline;
+}
+
+/*Login/Signup*/
+
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin: 30px auto;
+}
+
+.auth-container h2 {
+    text-align: center;
+    color: #242a84;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    background-color: #242a84;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #1b2064;
+}
+
+.switch-text {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.switch-text a {
+    color: #242a84;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.switch-text a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
