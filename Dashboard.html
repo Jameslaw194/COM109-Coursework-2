@@ -1,17 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <title> UniTask - Home Page</title>
+        <link rel="icon" href="static/image/favicon.ico" type="image/x-icon">
         <script src="static/js/main.js"></script>
-        <title> UniTask - Home Page</title> 
-        <link rel="stylesheet" type="text/css" href="static/css/styles.css" />
+        <link rel="stylesheet" type="text/css" href="static/css/main.css" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
 
     <body>
         <div class="topnav">
-            <a href="/">Home</a>
-            <a href="/Dashboard">Dashboard</a>
-            <a href="/Settings">Settings</a>
+            
+            <nav>
+                <ul>
+                    <img src="static/image/UniTaskLogo.png" alt="UniTask Logo">
+                    <a href="/">Home</a>
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="settings.html">
+                        <img src="static/image/setting_icon.png" alt="Settings" class="settings-icon">
+                    </a>  
+                    <a href="loginSignUp.html">Login/Signup</a>     
+                </ul>
+            </nav>
         </div>
+
+        <section class="Overview">
+            <h1>Welcome back, Student!</h1>
+            <p>Here's a quick look at your current tasks and progress.</p>
+            <div class="progress-section">
+                <h2>📊 Overall Progress</h2>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 0%;"></div>
+                  </div>
+                  <span id="progress-percent">0%</span>
+                </div>
+              </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 UniTask. All rights reserved.</p>
+        </footer>
+
     </body>
     
 </html>
