@@ -6,17 +6,12 @@ $('#darkToggle').click(() => {
 if (localStorage.getItem('darkMode') === 'true') $('body').addClass('dark');
 
 // Modal open/close
-$('#openAddTask').click(() => {
-  console.log('Opening modal...'); // Debugging line
-  $('#taskModal').removeClass('hidden');
-});
+$('#openAddTask').click(() => $('#taskModal').removeClass('hidden'));
 $('#closeModal').click(() => $('#taskModal').addClass('hidden'));
 
 // Load from LocalStorage
-let tasks = JSON.parse(localStorage.getItem('tasks'));
-if (!Array.isArray(tasks)) tasks = [];
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 renderTasks();
-
 
 // Add new task
 $('#addTaskBtn').click(() => {
@@ -33,8 +28,6 @@ $('#addTaskBtn').click(() => {
   tasks.push(newTask);
   saveTasks();
   renderTasks();
-  updateCountdowns();
-  updateProgress();
   $('#taskModal').addClass('hidden');
   $('#taskTitle').val('');
   $('#taskDeadline').val('');
@@ -69,20 +62,20 @@ function renderTasks() {
 
 // Event bindings
 function bindEvents() {
-  $(document).on('click', '.remove-btn', function () {
-    const id = Number($(this).closest('.task-item').data('id'));
+  $('.remove-btn').off().on('click', function () {
+    const id = $(this).closest('.task-item').data('id');
     tasks = tasks.filter(t => t.id !== id);
     saveTasks();
     renderTasks();
   });
-  
-  $(document).on('change', '.done-checkbox', function () {
-    const id = Number($(this).closest('.task-item').data('id'));
+
+  $('.done-checkbox').off().on('change', function () {
+    const id = $(this).closest('.task-item').data('id');
     const task = tasks.find(t => t.id === id);
     if (task) task.done = this.checked;
     saveTasks();
     updateProgress();
-  });  
+  });
 }
 
 // Countdown updates

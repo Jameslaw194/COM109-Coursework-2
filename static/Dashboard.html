@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title> UniTask - Home Page</title>
+        <link rel="icon" href="static/image/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="static/css/main.css" />
+    </head>
+
+    <body>
+        <div class="topnav">
+            
+            <nav>
+                <ul>
+                    <img src="static/image/UniTaskLogo.png" alt="UniTask Logo">
+                    <a href="index.html">Home</a>
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="settings.html">
+                        <img src="static/image/setting_icon.png" alt="Settings" class="settings-icon">
+                    </a>  
+                    <a href="loginSignUp.html">Login/Signup</a>     
+                </ul>
+            </nav>
+        </div>
+
+        <section class="Overview">
+            <h1>Welcome back, Student!</h1>
+            <p>Here's a quick look at your current tasks and progress.</p>
+            <div class="progress-section">
+                <h2>Overall Progress</h2>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 0%;"></div>
+                  </div>
+                  <span id="progress-percent">0%</span>
+                </div>
+              </div>
+        </section>
+
+        <section class="task-section">
+            <button id="openAddTask">+ Add New Task</button>
+            <h2>📝 Your Tasks</h2>
+            <ul class="task-list"></ul>
+          </section>
+          
+          <div id="taskModal" class="modal hidden">
+            <div class="modal-content">
+              <h2>Add New Task</h2>
+              <input type="text" id="taskTitle" placeholder="Task title..." />
+              <input type="datetime-local" id="taskDeadline" />
+              <button id="addTaskBtn">Add Task</button>
+              <button id="closeModal">Cancel</button>
+            </div>
+          </div>          
+
+        <footer>
+            <p>&copy; 2025 UniTask. All rights reserved.</p>
+        </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="static/js/main.js"></script>        
+    </body>
+    
+</html>
