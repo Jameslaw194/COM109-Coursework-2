@@ -1,22 +1,29 @@
 // Dark mode toggle
 $('#darkToggle').click(() => {
   $('body').toggleClass('dark');
-  localStorage.setItem('UniTask_darkMode', $('body').hasClass('dark') ? 'true' : 'false');
+  localStorage.setItem('darkMode', $('body').hasClass('dark') ? 'true' : 'false');
 });
-if (localStorage.getItem('UniTask_darkMode') === 'true') $('body').addClass('dark');
+if (localStorage.getItem('darkMode') === 'true') $('body').addClass('dark');
 
 // Modal open/close
-$('#openAddTask').click(() => $('#taskModal').removeClass('hidden'));
+$('#openAddTask').click(() => {
+  console.log('Opening modal...'); // Debugging line
+  $('#taskModal').removeClass('hidden');
+});
 $('#closeModal').click(() => $('#taskModal').addClass('hidden'));
 
-// Load tasks from LocalStorage
-let tasks = JSON.parse(localStorage.getItem('UniTask_tasks')) || [];
+// Load from LocalStorage
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 renderTasks();
 
 // Add new task
 $('#addTaskBtn').click(() => {
   const title = $('#taskTitle').val().trim();
-  const deadline = $('#taskDeadline').val();
+  const deadlineDate = new Date(deadline);
+if (isNaN(deadlineDate.getTime())) {
+  return alert('Invalid deadline format. Please enter a valid date.');
+}
+
   if (!title || !deadline) return alert('Please enter both task title and deadline.');
 
   const newTask = {
@@ -28,14 +35,15 @@ $('#addTaskBtn').click(() => {
   tasks.push(newTask);
   saveTasks();
   renderTasks();
+  updateCountdowns();
   $('#taskModal').addClass('hidden');
   $('#taskTitle').val('');
   $('#taskDeadline').val('');
 });
 
-// Save tasks to LocalStorage
+// Save to localStorage
 function saveTasks() {
-  localStorage.setItem('UniTask_tasks', JSON.stringify(tasks));
+  localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 // Render tasks
@@ -62,44 +70,20 @@ function renderTasks() {
 
 // Event bindings
 function bindEvents() {
-  $('.remove-btn').off().on('click', function () {
-    const id = $(this).closest('.task-item').data('id');
+  $(document).on('click', '.remove-btn', function () {
+    const id = Number($(this).closest('.task-item').data('id'));
     tasks = tasks.filter(t => t.id !== id);
     saveTasks();
-    renderTasks(); // Re-render after removing
+    renderTasks();
   });
-
-  $('.done-checkbox').off().on('change', function () {
-    const id = $(this).closest('.task-item').data('id');
+  
+  $(document).on('change', '.done-checkbox', function () {
+    const id = Number($(this).closest('.task-item').data('id'));
     const task = tasks.find(t => t.id === id);
     if (task) task.done = this.checked;
     saveTasks();
     updateProgress();
-  });
-
-  // Make sure modals still open/close
-  $('#openAddTask').off().on('click', () => $('#taskModal').removeClass('hidden'));
-  $('#closeModal').off().on('click', () => $('#taskModal').addClass('hidden'));
-
-  // Ensure "Add Task" button still works
-  $('#addTaskBtn').off().on('click', () => {
-    const title = $('#taskTitle').val().trim();
-    const deadline = $('#taskDeadline').val();
-    if (!title || !deadline) return alert('Please enter both task title and deadline.');
-
-    const newTask = {
-      id: Date.now(),
-      title,
-      deadline,
-      done: false
-    };
-    tasks.push(newTask);
-    saveTasks();
-    renderTasks(); // Re-render tasks to update UI
-    $('#taskModal').addClass('hidden');
-    $('#taskTitle').val('');
-    $('#taskDeadline').val('');
-  });
+  });  
 }
 
 // Countdown updates
@@ -124,7 +108,7 @@ function updateCountdowns() {
 }
 setInterval(updateCountdowns, 1000);
 
-// Update progress bar
+// Progress bar
 function updateProgress() {
   const total = tasks.length;
   const done = tasks.filter(t => t.done).length;
@@ -132,4 +116,3 @@ function updateProgress() {
   $('.progress-bar-fill').css('width', percent + '%');
   $('#progress-percent').text(percent + '%');
 }
-
