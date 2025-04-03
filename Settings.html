@@ -1,36 +1,132 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
-    <head>
-        <title> UniTask - Home Page</title> 
-        <script src="static/js/main.js"></script>
-        <link rel="icon" href="static/image/favicon.ico" type="image/x-icon">
-        <link rel="stylesheet" type="text/css" href="static/css/styles.css" />
-    </head>
+<head>
+    <meta charset="UTF-8" />
+    <title>UniTask - Settings</title>
+    <link rel="icon" href="static/image/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="static/css/main.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="static/js/main.js"></script>
 
-    <body>
-        <div class="topnav">
-            <nav>
-                <ul>
-                    <a href="index.html">
-                        <img src="static/image/UniTaskLogo.png" alt="UniTask Logo">
-                    </a>
-                    <a href="index.html">Home</a>
-                    <a href="dashboard.html">Dashboard</a>
-                    <a href="settings.html">
-                        <img src="static/image/setting_icon.png" alt="Settings" class="settings-icon">
-                    </a>  
-                    <a href="loginSignUp.html">Login/Signup</a>     
-                </ul>
-            </nav>
-        </div>
+    <style>
+        h2 {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
 
+        label, input, button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+        }
 
+        .inline-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
 
+        button {
+            padding: 8px;
+        }
 
+        #password-message {
+            font-size: 0.9em;
+        }
+    </style>
+</head>
 
+<body>
+    <div class="topnav">
+        <nav>
+            <ul>
+                <a href="index.html">
+                    <img src="static/image/UniTaskLogo.png" alt="UniTask Logo">
+                </a>
+                <a href="index.html">Home</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="settings.html">
+                    <img src="static/image/setting_icon.png" alt="Settings" class="settings-icon">
+                </a>  
+                <a href="loginSignUp.html">Login/Signup</a>     
+            </ul>
+        </nav>
+    </div>
 
+    <h2>Settings</h2>
 
-        
-    </body>
-    
+    <div class="card">
+        <!-- toggle for dark mode -->
+        <label class="inline-label">
+            Dark Mode
+            <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()" />
+        </label>
+    </div>
+
+    <div class="card">
+        <!-- change password form -->
+        <form id="change-password-form">
+            <label>Current Password
+                <input type="password" id="current-password" required />
+            </label>
+            <label>New Password
+                <input type="password" id="new-password" required />
+            </label>
+            <label>Confirm Password
+                <input type="password" id="confirm-password" required />
+            </label>
+            <button type="submit">Change Password</button>
+            <p id="password-message"></p>
+        </form>
+    </div>
+
+    <script>
+        function handlePasswordChange(e) {
+            e.preventDefault();
+
+            const current = document.getElementById('current-password').value;
+            const newPass = document.getElementById('new-password').value;
+            const confirm = document.getElementById('confirm-password').value;
+            const msg = document.getElementById('password-message');
+
+            // validation exmaple
+            if (newPass !== confirm) {
+                msg.textContent = "Passwords don't match.";
+                msg.style.color = "red";
+            } else if (current !== "yourCurrentPassword") {
+                msg.textContent = "Wrong current password.";
+                msg.style.color = "red";
+            } else {
+                msg.textContent = "Password changed successfully!";
+                msg.style.color = "green";
+                e.target.reset(); // clear form
+            }
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+        }
+
+        function loadSettings() {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.getElementById('dark-mode-toggle').checked = true;
+            }
+        }
+
+        window.onload = () => {
+            loadSettings();
+            document.getElementById('change-password-form')
+                .addEventListener('submit', handlePasswordChange);
+        };
+    </script>
+    <footer>
+      <p>&copy; 2025 UniTask. All rights reserved.</p>
+    </footer>
+</body>
 </html>

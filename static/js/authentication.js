@@ -3,24 +3,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const submitBtn = document.getElementById("submit-btn");
     const switchFormLink = document.getElementById("switch-form");
     const confirmPasswordGroup = document.getElementById("confirm-password-group");
-
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
     const confirmPasswordInput = document.getElementById("confirm-password");
 
+    console.log('Main.js loaded!')
     let isSignup = false;
-
+    
     // Check if user is logged in
-    if (getCookie('loggedIn')) {
-        updateNavbarForLoggedInUser();
-    } else {
-        showLoginSignupLinks();
-    }
-
+    checkLoginStatus();
+    
     switchFormLink.addEventListener("click", function (e) {
         e.preventDefault();
         isSignup = !isSignup;
-
         if (isSignup) {
             formTitle.textContent = "Sign Up";
             submitBtn.textContent = "Sign Up";
@@ -34,31 +29,52 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    document.getElementById("auth-form").addEventListener("submit", function (e) {
+    document.getElementById("auth-form").addEventListener("submit", async function (e) {
         e.preventDefault();
         
+        // Clear existing errors
         clearErrors();
 
+        // Validate form inputs
         let isValid = true;
-
         if (!validateEmail(emailInput.value)) {
             showError(emailInput, "Please enter a valid email address.");
             isValid = false;
         }
-
         if (passwordInput.value.length < 6) {
             showError(passwordInput, "Password must be at least 6 characters.");
             isValid = false;
         }
-
         if (isSignup && passwordInput.value !== confirmPasswordInput.value) {
             showError(confirmPasswordInput, "Passwords do not match.");
             isValid = false;
         }
 
-        if (isValid) {
-            setCookie('loggedIn', true, 7);
-            window.location.href = "/index.html";
+        if (!isValid) {
+            console.log('Validation failed');
+            return;
+        }
+
+        try {
+            if (isSignup) {
+                // Handle signup flow
+                await handleSignup(emailInput.value, passwordInput.value);
+                alert('Account created successfully!');
+            } else {
+                // Handle login flow
+                await handleLogin(emailInput.value, passwordInput.value);
+            }
+            
+            // Store account info and redirect
+            saveAccountInfo(
+                emailInput.value.split('@')[0],
+                emailInput.value,
+                true
+            );
+            window.location.href = "/dashboard.html";
+        } catch (error) {
+            console.error('Authentication failed:', error);
+            showError(passwordInput, error.message || "Authentication failed");
         }
     });
 
@@ -77,56 +93,104 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function validateEmail(email) {
-        const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA0-9]{2,6}$/;
+        const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         return regex.test(email);
     }
 
-    function setCookie(name, value, days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        let expires = "expires=" + date.toUTCString();
-        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    function saveAccountInfo(username, email, isLoggedIn) {
+        const accountData = {
+            username: username,
+            email: email,
+            isLoggedIn: isLoggedIn,
+            lastLogin: new Date().toISOString()
+        };
+        localStorage.setItem('accountInfo', JSON.stringify(accountData));
     }
 
-    function getCookie(name) {
-        let nameEq = name + "=";
-        let ca = document.cookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i].trim();
-            if (c.indexOf(nameEq) === 0) {
-                return c.substring(nameEq.length, c.length);
-            }
-        }
-        return "";
+    function getAccountInfo() {
+        const stored = localStorage.getItem('accountInfo');
+        return stored ? JSON.parse(stored) : null;
     }
 
-    function deleteCookie(name) {
-        document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+    function removeAccountInfo() {
+        localStorage.removeItem('accountInfo');
     }
 
     function updateNavbarForLoggedInUser() {
         const loginLink = document.getElementById("login-link");
         const signupLink = document.getElementById("signup-link");
         const logoutLink = document.getElementById("logout-link");
-
-        if (loginLink) loginLink.style.display = "none";
-        if (signupLink) signupLink.style.display = "none";
-        if (logoutLink) logoutLink.style.display = "block";
+        const accountInfo = getAccountInfo();
         
-        logoutLink.addEventListener("click", function (e) {
-            e.preventDefault();
-            deleteCookie('loggedIn');
-            window.location.href = "/index.html";
-        });
+        if (accountInfo?.isLoggedIn) {
+            if (loginLink) loginLink.style.display = "none";
+            if (signupLink) signupLink.style.display = "none";
+            if (logoutLink) {
+                logoutLink.style.display = "block";
+                logoutLink.textContent = `Logout (${accountInfo.username})`;
+                
+                logoutLink.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    removeAccountInfo();
+                    window.location.href = "/index.html";
+                });
+            }
+        }
     }
 
     function showLoginSignupLinks() {
         const loginLink = document.getElementById("login-link");
         const signupLink = document.getElementById("signup-link");
         const logoutLink = document.getElementById("logout-link");
-
+        
         if (loginLink) loginLink.style.display = "block";
         if (signupLink) signupLink.style.display = "block";
         if (logoutLink) logoutLink.style.display = "none";
+    }
+
+    function checkLoginStatus() {
+        const accountInfo = getAccountInfo();
+        if (accountInfo?.isLoggedIn) {
+            updateNavbarForLoggedInUser();
+        } else {
+            showLoginSignupLinks();
+        }
+    }
+
+    async function handleSignup(email, password) {
+        try {
+            if (!validateEmail(email)) {
+                throw new Error('Invalid email address');
+            }
+            if (password.length < 6) {
+                throw new Error('Password must be at least 6 characters');
+            }
+            
+            // Store the new user in localStorage
+            saveAccountInfo(
+                email.split('@')[0],
+                email,
+                true
+            );
+            
+            return true;
+        } catch (error) {
+            console.error('Signup failed:', error);
+            throw error;
+        }
+    }
+
+    async function handleLogin(email, password) {
+        try {
+            const existingAccount = getAccountInfo();
+            if (!existingAccount || existingAccount.email !== email) {
+                throw new Error('Invalid email or password');
+            }
+            
+            return true;
+        } catch (error) {
+            console.error('Login failed:', error);
+            throw error;
+        }
     }
 });

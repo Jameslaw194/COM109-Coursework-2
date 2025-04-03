@@ -1,135 +1,135 @@
-// Dark mode toggle
-$('#darkToggle').click(() => {
-  $('body').toggleClass('dark');
-  localStorage.setItem('UniTask_darkMode', $('body').hasClass('dark') ? 'true' : 'false');
-});
-if (localStorage.getItem('UniTask_darkMode') === 'true') $('body').addClass('dark');
+$(document).ready(() => {
+  console.log("UniTask Loaded!");
 
-// Modal open/close
-$('#openAddTask').click(() => $('#taskModal').removeClass('hidden'));
-$('#closeModal').click(() => $('#taskModal').addClass('hidden'));
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-// Load tasks from LocalStorage
-let tasks = JSON.parse(localStorage.getItem('UniTask_tasks')) || [];
-renderTasks();
-
-// Add new task
-$('#addTaskBtn').click(() => {
-  const title = $('#taskTitle').val().trim();
-  const deadline = $('#taskDeadline').val();
-  if (!title || !deadline) return alert('Please enter both task title and deadline.');
-
-  const newTask = {
-    id: Date.now(),
-    title,
-    deadline,
-    done: false
-  };
-  tasks.push(newTask);
-  saveTasks();
   renderTasks();
-  $('#taskModal').addClass('hidden');
-  $('#taskTitle').val('');
-  $('#taskDeadline').val('');
-});
-
-// Save tasks to LocalStorage
-function saveTasks() {
-  localStorage.setItem('UniTask_tasks', JSON.stringify(tasks));
-}
-
-// Render tasks
-function renderTasks() {
-  $('.task-list').html('');
-  tasks.forEach(task => {
-    const taskEl = $(`
-      <li class="task-item" data-id="${task.id}" data-deadline="${task.deadline}">
-        <input type="checkbox" class="done-checkbox" ${task.done ? 'checked' : ''} />
-        <div class="task-info">
-          <h3>${task.title}</h3>
-          <p>Due in <span class="countdown">loading...</span></p>
-        </div>
-        <button class="remove-btn">❌</button>
-      </li>
-    `);
-    $('.task-list').append(taskEl);
-  });
-
-  bindEvents();
   updateCountdowns();
-  updateProgress();
-}
+  updateProgressBar(); // Update progress on load
 
-// Event bindings
-function bindEvents() {
-  $('.remove-btn').off().on('click', function () {
-    const id = $(this).closest('.task-item').data('id');
-    tasks = tasks.filter(t => t.id !== id);
-    saveTasks();
-    renderTasks(); // Re-render after removing
+  // Open Modal
+  $("#openAddTask").click(() => $("#taskModal").removeClass("hidden"));
+
+  // Close Modal
+  $("#closeModal").click(() => $("#taskModal").addClass("hidden"));
+
+  // Add Task Functionality
+  $("#addTaskBtn").click(() => {
+      const taskTitle = $("#taskTitle").val().trim();
+      const taskDeadline = $("#taskDeadline").val();
+      const taskDescription = $("#taskDescription").val();
+      
+      console.log("Task Title:", taskTitle);
+      console.log("Task Deadline:", taskDeadline);
+      console.log("Task Description:", taskDescription);
+      
+
+
+      if (!taskTitle || !taskDeadline) {
+          alert("Please fill in all fields!");
+          return;
+      }
+
+      const newTask = {
+          id: Date.now(),
+          title: taskTitle,
+          deadline: new Date(taskDeadline).toISOString(), // Store in correct format
+          description: taskDescription,
+          completed: false
+      };
+
+      tasks.push(newTask);
+      saveTasks();
+      renderTasks();
+      updateCountdowns();
+      updateProgressBar();
+
+      $("#taskTitle").val(""); // Clear input fields
+      $("#taskDeadline").val("");
+      $("#taskDescription").val("");
+      $("#taskModal").addClass("hidden");
   });
 
-  $('.done-checkbox').off().on('change', function () {
-    const id = $(this).closest('.task-item').data('id');
-    const task = tasks.find(t => t.id === id);
-    if (task) task.done = this.checked;
-    saveTasks();
-    updateProgress();
-  });
+  function renderTasks() {
+      const taskList = $(".task-list");
+      taskList.empty();
 
-  // Make sure modals still open/close
-  $('#openAddTask').off().on('click', () => $('#taskModal').removeClass('hidden'));
-  $('#closeModal').off().on('click', () => $('#taskModal').addClass('hidden'));
+      tasks.forEach(task => {
+          const timeLeft = calculateTimeLeft(task.deadline);
+          const taskItem = $(`
+              <li class="task-item" data-id="${task.id}" data-deadline="${task.deadline}">
+                  <input type="checkbox" class="done-checkbox" ${task.completed ? "checked" : ""}/>
+                  <div class="task-info">
+                      <h3>${task.title}</h3>
+                      <p>${task.description}</p>
+                      <p>Due in <span class="countdown">${timeLeft}</span></p>
+                  </div>
+                  <button class="remove-btn">Delete Task</button>
+              </li>
+          `);
 
-  // Ensure "Add Task" button still works
-  $('#addTaskBtn').off().on('click', () => {
-    const title = $('#taskTitle').val().trim();
-    const deadline = $('#taskDeadline').val();
-    if (!title || !deadline) return alert('Please enter both task title and deadline.');
+          taskItem.find(".done-checkbox").change(function () {
+              const id = Number($(this).closest(".task-item").data("id"));
+              tasks = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
+              saveTasks();
+              updateProgressBar();
+          });
 
-    const newTask = {
-      id: Date.now(),
-      title,
-      deadline,
-      done: false
-    };
-    tasks.push(newTask);
-    saveTasks();
-    renderTasks(); // Re-render tasks to update UI
-    $('#taskModal').addClass('hidden');
-    $('#taskTitle').val('');
-    $('#taskDeadline').val('');
-  });
-}
+          taskItem.find(".remove-btn").click(function () {
+              const id = Number($(this).closest(".task-item").data("id"));
+              tasks = tasks.filter(t => t.id !== id);
+              saveTasks();
+              renderTasks();
+              updateProgressBar();
+          });
 
-// Countdown updates
-function updateCountdowns() {
-  $('.task-item').each(function () {
-    const deadline = new Date($(this).data('deadline'));
-    const now = new Date();
-    const diff = deadline - now;
+          taskList.append(taskItem);
+      });
+  }
 
-    if (diff <= 0) {
-      $(this).find('.countdown').text('Expired');
-      return;
-    }
+  function saveTasks() {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
 
-    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const m = Math.floor((diff / (1000 * 60)) % 60);
-    const s = Math.floor((diff / 1000) % 60);
+  function updateCountdowns() {
+      $(".task-item").each(function () {
+          const deadline = $(this).attr("data-deadline");
+          const countdownElement = $(this).find(".countdown");
+          countdownElement.text(calculateTimeLeft(deadline));
+      });
 
-    $(this).find('.countdown').text(`${d}d ${h}h ${m}m ${s}s`);
-  });
-}
-setInterval(updateCountdowns, 1000);
+      setTimeout(updateCountdowns, 1000); // Update every second
+  }
 
-// Update progress bar
-function updateProgress() {
-  const total = tasks.length;
-  const done = tasks.filter(t => t.done).length;
-  const percent = total === 0 ? 0 : Math.round((done / total) * 100);
-  $('.progress-bar-fill').css('width', percent + '%');
-  $('#progress-percent').text(percent + '%');
-}
+  function calculateTimeLeft(deadline) {
+      if (!deadline) return "No deadline set";
+
+      const now = new Date();
+      const taskTime = new Date(deadline);
+      const diffMs = taskTime - now;
+
+      if (diffMs <= 0) return "Overdue";
+
+      const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+      return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  function updateProgressBar() {
+      const totalTasks = tasks.length;
+      const completedTasks = tasks.filter(task => task.completed).length;
+      const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+      $(".progress-bar-fill").css("width", `${progressPercent}%`);
+      $("#progress-percent").text(`${progressPercent}%`);
+  }
+
+  // Dark Mode Persistence
+  if (localStorage.getItem("darkMode") === "true") {
+      $("body").addClass("dark");
+  }
+});
 
