@@ -315,7 +315,7 @@ html.dark .overview p {
 
 .progress-bar-fill {
     height: 100%;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: #3a5eff;
     transition: width 0.5s ease;
 }
 
@@ -329,11 +329,7 @@ html.dark .progress-bar-fill {
 
 #progress-percent {
     font-weight: bold;
-    color: black;
-}
-
-html.dark #progress-percent {
-    color: white;
+    color: #333;
 }
 
 /* Task Section */
