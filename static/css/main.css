@@ -282,7 +282,7 @@ button:hover {
 
 .task-header button:hover {
     background-color: #333cb8;
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
 .task-list {
