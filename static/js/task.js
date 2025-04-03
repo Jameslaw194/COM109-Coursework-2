@@ -1,9 +1,16 @@
+// Dark mode toggle
+$('#darkToggle').click(() => {
+  $('body').toggleClass('dark');
+  localStorage.setItem('UniTask_darkMode', $('body').hasClass('dark') ? 'true' : 'false');
+});
+if (localStorage.getItem('UniTask_darkMode') === 'true') $('body').addClass('dark');
+
 // Modal open/close
 $('#openAddTask').click(() => $('#taskModal').removeClass('hidden'));
 $('#closeModal').click(() => $('#taskModal').addClass('hidden'));
 
-// Load from LocalStorage
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+// Load tasks from LocalStorage
+let tasks = JSON.parse(localStorage.getItem('UniTask_tasks')) || [];
 renderTasks();
 
 // Add new task
@@ -26,9 +33,9 @@ $('#addTaskBtn').click(() => {
   $('#taskDeadline').val('');
 });
 
-// Save to localStorage
+// Save tasks to LocalStorage
 function saveTasks() {
-  localStorage.setItem('tasks', JSON.stringify(tasks));
+  localStorage.setItem('UniTask_tasks', JSON.stringify(tasks));
 }
 
 // Render tasks
@@ -59,7 +66,7 @@ function bindEvents() {
     const id = $(this).closest('.task-item').data('id');
     tasks = tasks.filter(t => t.id !== id);
     saveTasks();
-    renderTasks();
+    renderTasks(); // Re-render after removing
   });
 
   $('.done-checkbox').off().on('change', function () {
@@ -68,6 +75,30 @@ function bindEvents() {
     if (task) task.done = this.checked;
     saveTasks();
     updateProgress();
+  });
+
+  // Make sure modals still open/close
+  $('#openAddTask').off().on('click', () => $('#taskModal').removeClass('hidden'));
+  $('#closeModal').off().on('click', () => $('#taskModal').addClass('hidden'));
+
+  // Ensure "Add Task" button still works
+  $('#addTaskBtn').off().on('click', () => {
+    const title = $('#taskTitle').val().trim();
+    const deadline = $('#taskDeadline').val();
+    if (!title || !deadline) return alert('Please enter both task title and deadline.');
+
+    const newTask = {
+      id: Date.now(),
+      title,
+      deadline,
+      done: false
+    };
+    tasks.push(newTask);
+    saveTasks();
+    renderTasks(); // Re-render tasks to update UI
+    $('#taskModal').addClass('hidden');
+    $('#taskTitle').val('');
+    $('#taskDeadline').val('');
   });
 }
 
@@ -93,7 +124,7 @@ function updateCountdowns() {
 }
 setInterval(updateCountdowns, 1000);
 
-// Progress bar
+// Update progress bar
 function updateProgress() {
   const total = tasks.length;
   const done = tasks.filter(t => t.done).length;
@@ -101,3 +132,4 @@ function updateProgress() {
   $('.progress-bar-fill').css('width', percent + '%');
   $('#progress-percent').text(percent + '%');
 }
+
