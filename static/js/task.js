@@ -15,121 +15,121 @@ $(document).ready(() => {
 
   // Add Task Functionality
   $("#addTaskBtn").click(() => {
-      const taskTitle = $("#taskTitle").val().trim();
-      const taskDeadline = $("#taskDeadline").val();
-      const taskDescription = $("#taskDescription").val();
-      
-      console.log("Task Title:", taskTitle);
-      console.log("Task Deadline:", taskDeadline);
-      console.log("Task Description:", taskDescription);
-      
+	  const taskTitle = $("#taskTitle").val().trim();
+	  const taskDeadline = $("#taskDeadline").val();
+	  const taskDescription = $("#taskDescription").val();
+	  
+	  console.log("Task Title:", taskTitle);
+	  console.log("Task Deadline:", taskDeadline);
+	  console.log("Task Description:", taskDescription);
+	  
 
 
-      if (!taskTitle || !taskDeadline) {
-          alert("Please fill in all fields!");
-          return;
-      }
+	  if (!taskTitle || !taskDeadline) {
+		  alert("Please fill in all fields!");
+		  return;
+	  }
 
-      const newTask = {
-          id: Date.now(),
-          title: taskTitle,
-          deadline: new Date(taskDeadline).toISOString(), // Store in correct format
-          description: taskDescription,
-          completed: false
-      };
+	  const newTask = {
+		  id: Date.now(),
+		  title: taskTitle,
+		  deadline: new Date(taskDeadline).toISOString(), // Store in correct format
+		  description: taskDescription,
+		  completed: false
+	  };
 
-      tasks.push(newTask);
-      saveTasks();
-      renderTasks();
-      updateCountdowns();
-      updateProgressBar();
+	  tasks.push(newTask);
+	  saveTasks();
+	  renderTasks();
+	  updateCountdowns();
+	  updateProgressBar();
 
-      $("#taskTitle").val(""); // Clear input fields
-      $("#taskDeadline").val("");
-      $("#taskDescription").val("");
-      $("#taskModal").addClass("hidden");
+	  $("#taskTitle").val(""); // Clear input fields
+	  $("#taskDeadline").val("");
+	  $("#taskDescription").val("");
+	  $("#taskModal").addClass("hidden");
   });
 
   function renderTasks() {
-      const taskList = $(".task-list");
-      taskList.empty();
+	  const taskList = $(".task-list");
+	  taskList.empty();
 
-      tasks.forEach(task => {
-          const timeLeft = calculateTimeLeft(task.deadline);
-          const taskItem = $(`
-              <li class="task-item" data-id="${task.id}" data-deadline="${task.deadline}">
-                  <input type="checkbox" class="done-checkbox" ${task.completed ? "checked" : ""}/>
-                  <div class="task-info">
-                      <h3>${task.title}</h3>
-                      <p>${task.description}</p>
-                      <p>Due in <span class="countdown">${timeLeft}</span></p>
-                  </div>
-                  <button class="remove-btn">Delete Task</button>
-              </li>
-          `);
+	  tasks.forEach(task => {
+		  const timeLeft = calculateTimeLeft(task.deadline);
+		  const taskItem = $(`
+			  <li class="task-item" data-id="${task.id}" data-deadline="${task.deadline}">
+				  <input type="checkbox" class="done-checkbox" ${task.completed ? "checked" : ""}/>
+				  <div class="task-info">
+					  <h3>${task.title}</h3>
+					  <p>${task.description}</p>
+					  <p>Due in <span class="countdown">${timeLeft}</span></p>
+				  </div>
+				  <button class="remove-btn">Delete Task</button>
+			  </li>
+		  `);
 
-          taskItem.find(".done-checkbox").change(function () {
-              const id = Number($(this).closest(".task-item").data("id"));
-              tasks = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
-              saveTasks();
-              updateProgressBar();
-          });
+		  taskItem.find(".done-checkbox").change(function () {
+			  const id = Number($(this).closest(".task-item").data("id"));
+			  tasks = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
+			  saveTasks();
+			  updateProgressBar();
+		  });
 
-          taskItem.find(".remove-btn").click(function () {
-              const id = Number($(this).closest(".task-item").data("id"));
-              tasks = tasks.filter(t => t.id !== id);
-              saveTasks();
-              renderTasks();
-              updateProgressBar();
-          });
+		  taskItem.find(".remove-btn").click(function () {
+			  const id = Number($(this).closest(".task-item").data("id"));
+			  tasks = tasks.filter(t => t.id !== id);
+			  saveTasks();
+			  renderTasks();
+			  updateProgressBar();
+		  });
 
-          taskList.append(taskItem);
-      });
+		  taskList.append(taskItem);
+	  });
   }
 
   function saveTasks() {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
+	  localStorage.setItem("tasks", JSON.stringify(tasks));
   }
 
   function updateCountdowns() {
-      $(".task-item").each(function () {
-          const deadline = $(this).attr("data-deadline");
-          const countdownElement = $(this).find(".countdown");
-          countdownElement.text(calculateTimeLeft(deadline));
-      });
+	  $(".task-item").each(function () {
+		  const deadline = $(this).attr("data-deadline");
+		  const countdownElement = $(this).find(".countdown");
+		  countdownElement.text(calculateTimeLeft(deadline));
+	  });
 
-      setTimeout(updateCountdowns, 1000); // Update every second
+	  setTimeout(updateCountdowns, 1000); // Update every second
   }
 
   function calculateTimeLeft(deadline) {
-      if (!deadline) return "No deadline set";
+	  if (!deadline) return "No deadline set";
 
-      const now = new Date();
-      const taskTime = new Date(deadline);
-      const diffMs = taskTime - now;
+	  const now = new Date();
+	  const taskTime = new Date(deadline);
+	  const diffMs = taskTime - now;
 
-      if (diffMs <= 0) return "Overdue";
+	  if (diffMs <= 0) return "Overdue";
 
-      const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+	  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+	  const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+	  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+	  const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
-      return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+	  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
   }
 
   function updateProgressBar() {
-      const totalTasks = tasks.length;
-      const completedTasks = tasks.filter(task => task.completed).length;
-      const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+	  const totalTasks = tasks.length;
+	  const completedTasks = tasks.filter(task => task.completed).length;
+	  const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
-      $(".progress-bar-fill").css("width", `${progressPercent}%`);
-      $("#progress-percent").text(`${progressPercent}%`);
+	  $(".progress-bar-fill").css("width", `${progressPercent}%`);
+	  $("#progress-percent").text(`${progressPercent}%`);
   }
 
   // Dark Mode Persistence
   if (localStorage.getItem("darkMode") === "true") {
-      $("body").addClass("dark");
+	  $("body").addClass("dark");
   }
 });
 
