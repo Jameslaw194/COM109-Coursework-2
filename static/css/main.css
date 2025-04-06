@@ -1,3 +1,6 @@
+/* ----------------------------
+Global styles for all pages
+----------------------------- */
 html {
 	min-height: 100%;
 }
@@ -26,7 +29,24 @@ html.dark body {
 	padding: 20px;
 }
 
-/* Navigation bar */
+button {
+	width: 100%;
+	background-color: #242a84;
+	color: white;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #1b2064;
+}
+
+/* ----------------------------
+Navigation bar
+----------------------------- */
 .topnav {
 	display: flex;
 	align-items: center;
@@ -87,23 +107,9 @@ html.dark body {
 	}
 }
 
-/* Settings */
-.card {
-	max-width: 300px;
-	width: 100%;
-	margin: 15px auto;
-	padding: 15px;
-	border: 1px solid #ccc;
-	border-radius: 8px;
-	background: inherit;
-}
-
-html.dark .card {
-	border-color: #444;
-	background: #2a2a2a;
-}
-
-/* Footer */
+/* ----------------------------
+Footer
+----------------------------- */
 footer {
 	text-align: center;
 	padding: 1.5rem;
@@ -123,7 +129,12 @@ html.dark footer {
 	color: #aaa;
 }
 
-/* Instructions */
+
+
+
+/* ----------------------------
+   INDEX.HTML (HOME PAGE)
+----------------------------- */
 .instructions {
 	background: #f9f9f9;
 	padding: 20px;
@@ -175,89 +186,11 @@ html.dark .instructions a {
 	color: #ff6b6b;
 }
 
-/* Login/Signup */
-.auth-container {
-	width: 100%;
-	max-width: 400px;
-	background: white;
-	padding: 20px;
-	border-radius: 10px;
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-	margin: 30px auto;
-}
 
-.auth-container h2 {
-	text-align: center;
-	color: #242a84;
-}
 
-.input-group {
-	margin-bottom: 15px;
-}
-
-.input-group label {
-	display: block;
-	font-weight: bold;
-	margin-bottom: 5px;
-}
-
-.input-group input {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	box-sizing: border-box;
-}
-
-html.dark .auth-container {
-	background: #2a2a2a;
-	color: #fff;
-	box-shadow: none;
-}
-
-html.dark .input-group input {
-	background: #444;
-	color: #fff;
-	border-color: #666;
-}
-
-button {
-	width: 100%;
-	background-color: #242a84;
-	color: white;
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 16px;
-}
-
-button:hover {
-	background-color: #1b2064;
-}
-
-.switch-text {
-	text-align: center;
-	margin-top: 10px;
-}
-
-.switch-text a {
-	color: #242a84;
-	text-decoration: none;
-	font-weight: bold;
-}
-
-.switch-text a:hover {
-	text-decoration: underline;
-}
-
-.error-message {
-	color: red;
-	font-size: 14px;
-	margin-top: 5px;
-}
-
-/* Dashboard */
+/* ----------------------------
+   DASHBOARD.HTML
+----------------------------- */
 .dashboard {
 	padding: 3rem 2rem;
 	border-radius: 10px;
@@ -418,9 +351,6 @@ html.dark .progress-bar-fill {
 
 
 
-
-
-
 .task-actions {
 	display: flex;
 	gap: 8px;
@@ -539,7 +469,23 @@ html.dark .modal-content button#closeModal {
 
 
 
+/* ----------------------------
+   SETTINGS.HTML
+----------------------------- */
+.card {
+	max-width: 300px;
+	width: 100%;
+	margin: 15px auto;
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	background: inherit;
+}
 
+html.dark .card {
+	border-color: #444;
+	background: #2a2a2a;
+}
 
 .settings h2{
 	text-align: center;
@@ -571,5 +517,72 @@ html.dark .modal-content button#closeModal {
 
 
 
+/* Login/Signup */
+.auth-container {
+	width: 100%;
+	max-width: 400px;
+	background: white;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+	margin: 30px auto;
+}
 
+.auth-container h2 {
+	text-align: center;
+	color: #242a84;
+}
+
+.input-group {
+	margin-bottom: 15px;
+}
+
+.input-group label {
+	display: block;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.input-group input {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-sizing: border-box;
+}
+
+html.dark .auth-container {
+	background: #2a2a2a;
+	color: #fff;
+	box-shadow: none;
+}
+
+html.dark .input-group input {
+	background: #444;
+	color: #fff;
+	border-color: #666;
+}
+
+
+
+.switch-text {
+	text-align: center;
+	margin-top: 10px;
+}
+
+.switch-text a {
+	color: #242a84;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.switch-text a:hover {
+	text-decoration: underline;
+}
+
+.error-message {
+	color: red;
+	font-size: 14px;
+	margin-top: 5px;
+}
 
