@@ -394,6 +394,59 @@ html.dark .progress-bar-fill {
 	color: #e74c3c;
 }
 
+
+/* ======= Task Completion Section ======= */
+
+
+.task-item .complete {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.task-item .complete p {
+    margin: 0;
+    font-weight: 500;
+}
+
+.task-item .done-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+.task-actions {
+	display: flex;
+	gap: 8px;
+	margin-top: 10px;
+  }
+  
+  .task-actions button {
+	padding: 5px 10px;
+	border: none;
+	background-color: #007bff;
+	color: white;
+	border-radius: 4px;
+	cursor: pointer;
+  }
+  
+  .task-actions .remove-btn {
+	background-color: #dc3545;
+  }
+  
+  .task-actions .edit-btn:hover,
+  .task-actions .remove-btn:hover {
+	opacity: 0.9;
+  }
+  
+
+
 html.dark .task-item {
 	background: #2a2a2a;
 	color: #eee;
@@ -514,3 +567,9 @@ html.dark .modal-content button#closeModal {
 .settings #password-message {
 	font-size: 0.9em;
 }
+
+
+
+
+
+
