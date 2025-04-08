@@ -30,19 +30,23 @@ html.dark body {
 }
 
 button {
-	width: 100%;
-	background-color: #242a84;
-	color: white;
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 16px;
+    width: 100%;
+    background-color: #242a84;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
 }
 
 button:hover {
-	background-color: #1b2064;
+    background-color: #1b2064;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+
 
 /* ----------------------------
 Navigation bar
@@ -294,16 +298,28 @@ html.dark .progress-bar-fill {
 }
 
 .task-item {
-	background: #fff;
-	padding: 1rem;
-	border-radius: 10px;
-	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-	margin-bottom: 1rem;
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-	justify-content: space-between;
+    background: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;  /* Fade-in animation */
 }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 
 .task-info h3 {
 	margin-bottom: 0.3rem;
