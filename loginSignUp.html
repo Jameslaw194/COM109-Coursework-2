@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" class="">
 <head>
-	<title>UniTask - Login | Signup</title>
+	<title>UniTask - Login</title>
 	<meta charset="UTF-8" />
 	<link rel="icon" href="static/image/favicon.ico" type="image/x-icon">
 	<script src="static/js/main.js"></script>
-	<script src="static/js/authentication.js"></script>
 	<link rel="stylesheet" type="text/css" href="static/css/main.css" />
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	   
@@ -22,35 +21,80 @@
 				<a href="settings.html">
 					<img src="static/image/setting_icon.png" alt="Settings" class="settings-icon">
 				</a>
-				<a href="#" id="login-link" style="display: none;" onclick="window.location.href='/loginSignUp.html';">Login</a>
-				<a href="#" id="logout-link" style="display: none;">Logout</a>
+				<a href="loginSignUp.html" id="authLink">Login/Signup</a>
 			</ul>
 		</nav>
 	</div>
+    
 
-	<div class="auth-container">
-		<div class="form-box">
-			<h2 id="form-title">Login</h2>
-			<form id="auth-form">
-				<div class="input-group">
-					<label for="email">Email:</label>
-					<input type="email" id="email" name="email" required>
-				</div>
-				<div class="input-group">
-					<label for="password">Password:</label>
-					<input type="password" id="password" name="password" required>
-				</div>
-				<div id="confirm-password-group" class="input-group" style="display: none;">
-					<label for="confirm-password">Confirm Password:</label>
-					<input type="password" id="confirm-password" name="confirm-password">
-				</div>
-				<button type="submit" id="submit-btn">Login</button>
-				<p class="switch-text">
-					Don't have an account? <a href="#" id="switch-form">Sign up</a>
-				</p>
-			</form>
+	<main class="loginSignup">
+		<h2>Login</h2>
+        <button onclick="openModal('loginModal')" style="width:auto;">Login</button>
+        <button onclick="openModal('signupModal')" style="width:auto;">Sign Up</button>
+		
+	  
+		<!-- Login Modal -->
+		<div id="loginModal" class="modal">
+		  <form class="modal-content animate" id="loginForm">
+			<div class="imgcontainer">
+			  <span onclick="closeModal('loginModal')" class="close" title="Close Modal">&times;</span>
+			  <img src="static/image/img_avatar2.png" alt="Avatar" class="avatar" />
+			</div>
+	  
+			<div class="container">
+                <label for="loginEmail"><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="email" id="loginEmail" required />
+                                
+	  
+			  <label for="loginPassword"><b>Password</b></label>
+			  <input type="password" placeholder="Enter Password" name="password" id="loginPassword" required />
+	  
+			  <button type="submit">Login</button>
+			  <label>
+				<input type="checkbox" name="remember" /> Remember me
+			  </label>
+			</div>
+	  
+			<div class="container" style="background-color:#f1f1f1">
+			  <button type="button" class="cancelbtn" onclick="closeModal('loginModal')">Cancel</button>
+			  <span class="psw">Forgot <a href="#">password?</a></span>
+			</div>
+		  </form>
 		</div>
-	</div>
+
+        		<!-- Signup Modal -->
+		<div id="signupModal" class="modal">
+            <form class="modal-content" id="signupForm">
+              <div class="container">
+                <span onclick="closeModal('signupModal')" class="close" title="Close Modal">&times;</span>
+                <h1>Sign Up</h1>
+                <p>Please fill in this form to create an account.</p>
+                <hr />
+        
+                <label for="signupEmail"><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="email" id="signupEmail" required />
+        
+                <label for="signupPassword"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" id="signupPassword" required />
+        
+                <label for="signupPasswordRepeat"><b>Repeat Password</b></label>
+                <input type="password" placeholder="Repeat Password" name="repeatPassword" id="signupPasswordRepeat" required />
+        
+                <label>
+                  <input type="checkbox" name="remember" checked style="margin-bottom:15px" /> Remember me
+                </label>
+        
+                <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+        
+                <div class="clearfix">
+                  <button type="button" class="cancelbtn" onclick="closeModal('signupModal')">Cancel</button>
+                  <button type="submit" class="signupbtn">Sign Up</button>
+                </div>
+              </div>
+            </form>
+          </div>
+  
+	  </main>
 
 	<footer>
 		<p>&copy; 2025 UniTask. All rights reserved.</p>
