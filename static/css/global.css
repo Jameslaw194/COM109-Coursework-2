@@ -1,0 +1,148 @@
+/* ----------------------------
+Global styles for all pages
+----------------------------- */
+html {
+	min-height: 100%;
+}
+
+body {
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	background: #ffffff;
+	color: black;
+	transition: 0.3s;
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	overflow-x: hidden;
+	min-height: 100vh;
+}
+
+html.dark body {
+	background: #222;
+	color: white;
+}
+
+.container {
+	flex: 1;
+	padding: 20px;
+}
+
+button {
+	width: 100%;
+	background-color: #242a84;
+	color: white;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+	background-color: #1b2064;
+	transform: scale(1.05);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+/* ----------------------------
+Navigation bar
+----------------------------- */
+.topnav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 20px;
+	background-color: #1b1f61;
+}
+
+.topnav img {
+	height: 50px;
+	width: auto;
+	max-width: 100%;
+}
+
+.topnav nav {
+	display: flex;
+	align-items: center;
+}
+
+.topnav ul {
+	display: flex;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.topnav a {
+	color: white;
+	text-decoration: none;
+	padding: 10px 15px;
+	display: flex;
+	align-items: center;
+}
+
+.topnav .settings-icon {
+	height: 30px;
+	width: auto;
+}
+
+@media (max-width: 768px) {
+	.topnav {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.topnav img {
+		height: 40px;
+	}
+
+	.topnav ul {
+		flex-direction: column;
+		text-align: center;
+	}
+
+	.topnav a {
+		display: block;
+		padding: 8px;
+	}
+}
+
+/* ----------------------------
+Footer
+----------------------------- */
+footer {
+	text-align: center;
+	padding: 1.5rem;
+	background: #3e3c3c;
+	color: #ccc;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
+
+footer p {
+	margin: 0;
+}
+
+html.dark footer {
+	background: #111;
+	color: #aaa;
+}
+
+.card {
+	max-width: 300px;
+	width: 100%;
+	margin: 15px auto;
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	background: inherit;
+}
+html.dark .card {
+	border-color: #444;
+	background: #2a2a2a;
+}
