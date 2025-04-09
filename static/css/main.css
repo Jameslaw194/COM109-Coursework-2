@@ -531,7 +531,7 @@ input[type=text], input[type=password] {
 }
 
 .loginSignup  button {
-	background-color: #04AA6D;
+	background-color: #1b1f61;
 	color: white;
 	padding: 14px 20px;
 	margin: 8px 0;
@@ -552,7 +552,7 @@ input[type=text], input[type=password] {
 }
 
 .loginSignup  .signupbtn {
-	background-color: #04AA6D;
+	background-color: #1b1f61;
 }
 
 .loginSignup  .container {

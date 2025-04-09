@@ -13,6 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function toggleDarkMode() {
+		document.documentElement.classList.toggle('dark');
+				const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+				localStorage.setItem('theme', theme);
+				
         if (body.classList.contains("dark")) {
             body.classList.remove("dark");
             localStorage.setItem("darkMode", "disabled");

@@ -8,6 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="static/css/main.css" />
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script src="static/js/main.js"></script>
+		<script src="static/js/settings.js"></script>
 	</head>
 
 	<body>
@@ -58,52 +59,8 @@
 
 	</main>
 
-		<script>
-			function handlePasswordChange(e) {
-				e.preventDefault();
-
-				const current = document.getElementById('current-password').value;
-				const newPass = document.getElementById('new-password').value;
-				const confirm = document.getElementById('confirm-password').value;
-				const msg = document.getElementById('password-message');
-
-				// validation exmaple
-				if (newPass !== confirm) {
-					msg.textContent = "Passwords don't match.";
-					msg.style.color = "red";
-				} else if (current !== "yourCurrentPassword") {
-					msg.textContent = "Wrong current password.";
-					msg.style.color = "red";
-				} else {
-					msg.textContent = "Password changed successfully!";
-					msg.style.color = "green";
-					e.target.reset(); // clear form
-				}
-			}
-
-			function toggleDarkMode() {
-				document.documentElement.classList.toggle('dark');
-				const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-				localStorage.setItem('theme', theme);
-			}
-
-			function loadSettings() {
-				const theme = localStorage.getItem('theme');
-				if (theme === 'dark') {
-					document.documentElement.classList.add('dark');
-					document.getElementById('dark-mode-toggle').checked = true;
-				}
-			}
-
-			window.onload = () => {
-				loadSettings();
-				document.getElementById('change-password-form')
-					.addEventListener('submit', handlePasswordChange);
-			};
-		</script>
-		<footer>
-		<p>&copy; 2025 UniTask. All rights reserved.</p>
-		</footer>
-
-	</body>
-	</html>
+	<footer>
+	<p>&copy; 2025 UniTask. All rights reserved.</p>
+	</footer>
+</body>
+</html>
