@@ -4,6 +4,21 @@ function getCookie(name) {
 }
 
 $(document).ready(() => {
+
+	// Close modals when clicking outside of them
+	$(window).on("click", function (event) {
+		const addModal = $("#taskModal")[0];
+		const editModal = $("#editTaskModal")[0];
+
+		if (event.target === addModal) {
+			$("#taskModal").addClass("hidden");
+		}
+
+		if (event.target === editModal) {
+			$("#editTaskModal").addClass("hidden");
+		}
+	});
+
 	console.log("UniTask Loaded!");
 
 	const email = getCookie("email");
@@ -179,5 +194,5 @@ $(document).ready(() => {
 	if (localStorage.getItem("darkMode") === "true") {
 		$("body").addClass("dark");
 	}
-	});
+});
 	
