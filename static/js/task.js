@@ -1,5 +1,17 @@
+function getCookie(name) {
+	const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+	return match ? decodeURIComponent(match[2]) : null;
+}
+
 $(document).ready(() => {
 	console.log("UniTask Loaded!");
+
+	const email = getCookie("email");
+	if (!email || !localStorage.getItem(email)) {
+		alert("You must be logged in to access your tasks.");
+		window.location.href = "loginSignUp.html";
+		return;
+	}
 	
 	let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 	
