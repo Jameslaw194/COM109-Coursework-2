@@ -122,11 +122,7 @@ footer {
     padding: 1.5rem;
     background: #3e3c3c;
     color: #ccc;
-    /* position: fixed;  <-- Remove this line */
-    /* bottom: 0;       <-- Remove this line (no longer needed without position: fixed) */
-    width: 100%;       /* Keep this if you want the footer background full width */
-    /* Consider adding margin-top if needed for spacing */
-    /* margin-top: auto; */ /* This can sometimes help ensure it's pushed down */
+    width: 100%;
 }
 
 footer p {
