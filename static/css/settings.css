@@ -3,8 +3,18 @@
 ----------------------------- */
 .settings h2{
 	text-align: center;
-	margin-top: 50px;
-	margin-bottom: 30px;
+	color: #242a84;
+	margin-top: 20px;
+	padding: 20px;
+	margin-bottom: 20px;
+}
+
+html.dark .settings h2{
+	text-align: center;
+	color: #9aa0ff;
+	margin-top: 20px;
+	padding: 20px;
+	margin-bottom: 20px;
 }
 
 .settings label, input, button {
