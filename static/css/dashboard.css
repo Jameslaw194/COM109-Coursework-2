@@ -183,7 +183,12 @@ cursor: pointer;
 }
 
 .task-actions .remove-btn {
+	padding: 5px 10px;
+	border: none;
 	background-color: #dc3545;
+	color: white;
+	border-radius: 4px;
+	cursor: pointer;
 }
 
 .task-actions .remove-btn:hover {
@@ -201,7 +206,12 @@ html.dark .task-info h3 {
 }
 
 html.dark .remove-btn {
-	color: #ff5c5c;
+	padding: 5px 10px;
+	border: none;
+	background-color: #dc3545;
+	color: white;
+	border-radius: 4px;
+	cursor: pointer;
 }
 
 /* Modal */
