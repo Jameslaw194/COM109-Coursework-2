@@ -114,23 +114,28 @@ Navigation bar
 /* ----------------------------
 Footer
 ----------------------------- */
+/* ----------------------------
+Footer
+----------------------------- */
 footer {
-	text-align: center;
-	padding: 1.5rem;
-	background: #3e3c3c;
-	color: #ccc;
-	position: fixed;
-	bottom: 0;
-	width: 100%;
+    text-align: center;
+    padding: 1.5rem;
+    background: #3e3c3c;
+    color: #ccc;
+    /* position: fixed;  <-- Remove this line */
+    /* bottom: 0;       <-- Remove this line (no longer needed without position: fixed) */
+    width: 100%;       /* Keep this if you want the footer background full width */
+    /* Consider adding margin-top if needed for spacing */
+    /* margin-top: auto; */ /* This can sometimes help ensure it's pushed down */
 }
 
 footer p {
-	margin: 0;
+    margin: 0;
 }
 
 html.dark footer {
-	background: #111;
-	color: #aaa;
+    background: #111;
+    color: #aaa;
 }
 
 .card {
