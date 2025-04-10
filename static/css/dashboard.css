@@ -75,6 +75,11 @@ html.dark .progress-bar-fill {
 	color: #333;
 }
 
+html.dark #progress-percent {
+	font-weight: bold;
+	color: #ffffff;
+}
+
 /* Task Section */
 .task-section {
 	margin-top: 3rem;
