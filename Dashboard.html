@@ -7,9 +7,11 @@
 		<link rel="icon" href="static/image/favicon.ico" type="image/x-icon">
 		<link rel="stylesheet" type="text/css" href="static/css/dashboard.css" />
 		<link rel="stylesheet" type="text/css" href="static/css/global.css" />
+		<link rel="stylesheet" href="static/css/calenderStyles.css">
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script src="static/js/darkMode.js"></script>
 		<script src="static/js/loginSignup.js"></script>
+
 	</head>
 
 	<body>
@@ -34,7 +36,6 @@
 		<section class="overview">
 			<h1>Welcome back, Student!</h1>
 			<p>Here's a quick look at your current tasks and progress.</p>
-
 			<div class="progress-section">
 				<h2>Overall Progress</h2>
 				<div class="progress-bar-container">
@@ -79,6 +80,32 @@
 			</ul>
 		</section>
 		
+		<!-- Dynamic Calender for homepage-->
+		<div class="calendar">
+			<div class="calendar-header">
+				<button id="prev-month">‹</button>
+			<div id="month-year"></div>
+			<button id="next-month">›</button>
+			</div>
+			<div class="calendar-body">
+				<div class="calendar-weekdays">
+					<!-- Weekday Names -->
+					<div class="calendar-weekdays">
+						<div>Sun</div>
+						<div>Mon</div>
+						<div>Tue</div>
+						<div>Wed</div>
+						<div>Thu</div>
+						<div>Fri</div>
+						<div>Sat</div>
+					</div>
+				</div>
+				<div class="calendar-dates">
+					<!-- Dates will be populated in this section -->
+				</div>
+			</div>
+		</div>
+		<script src="/static/js/calenderScript.js"></script>
 	</main>
 
 	<footer>
