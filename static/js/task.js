@@ -1,3 +1,10 @@
+// Get current date and time
+var now = new Date();
+var datetime = now.toLocaleString();
+
+// Insert date and time into HTML
+document.getElementById("datetime").innerHTML = datetime;
+
 function getCookie(name) {
 	const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
 	return match ? decodeURIComponent(match[2]) : null;
