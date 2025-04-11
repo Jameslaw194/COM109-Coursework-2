@@ -11,6 +11,10 @@ input[type=text], input[type=password] {
 	box-sizing: border-box;
 }
 
+.loginSignup.container {
+    text-align: center;
+}
+
 .login-overview {
 	margin-bottom: 3rem;
 }
