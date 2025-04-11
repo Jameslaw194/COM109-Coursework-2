@@ -15,6 +15,7 @@ html.dark .dashboard {
 /* Overview Section */
 .overview {
 	margin-bottom: 3rem;
+	text-align: center;
 }
 
 .overview h1 {
